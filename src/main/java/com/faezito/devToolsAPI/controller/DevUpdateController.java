@@ -3,6 +3,7 @@ package com.faezito.devToolsAPI.controller;
 import com.faezito.devToolsAPI.model.DevUpdateModel;
 import com.faezito.devToolsAPI.service.DevUpdateService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class DevUpdateController {
 
     @GetMapping("/Listar/{sistemaId}")
     @Operation(summary = "Listar nota de atualização", description = "Lista as notas de atualização do sistema informado")
-    public List<DevUpdateModel> Listar(@RequestParam Integer sistemaId)
+    public List<DevUpdateModel> Listar(@Parameter(description = "ID do sistema") @PathVariable Integer sistemaId)
     {
         return service.Listar(sistemaId);
     }
@@ -36,7 +37,7 @@ public class DevUpdateController {
         service.Inserir(devUpdateModel);
     }
 
-    @Operation(summary = "Editar ntoa de atualização", description = "Edita uma nota de atualização")
+    @Operation(summary = "Editar nota de atualização", description = "Edita uma nota de atualização")
     @PutMapping("/Editar")
     public void Editar(@RequestBody DevUpdateModel devUpdateModel){
         service.Editar(devUpdateModel);
@@ -47,4 +48,11 @@ public class DevUpdateController {
     public void Excluir(Integer id){
         service.Excluir(id);
     }
+
+    @Operation(summary = "Obter atualização")
+    @GetMapping("/Obter/{id}")
+    public DevUpdateModel Obter(@Parameter(description = "ID") @PathVariable int id){
+        return service.Obter(id);
+    }
+
 }

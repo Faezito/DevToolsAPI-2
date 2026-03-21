@@ -30,6 +30,16 @@ public class DevUpdateRepository implements IDevUpdateRepository {
     }
 
     @Override
+    public DevUpdateModel Obter(Integer id) {
+        String sql = "select * from dev.Atualizacoes where ID = :id";
+
+        Map<String, Object> params = Map.of("id", id);
+
+        return db.query(sql, params, new BeanPropertyRowMapper<>(DevUpdateModel.class))
+                .stream().findFirst().orElse(null);
+    }
+
+    @Override
     public void Inserir(DevUpdateModel devUpdateModel) {
         String sql = """
                 INSERT INTO dev.Atualizacoes
@@ -42,7 +52,7 @@ public class DevUpdateRepository implements IDevUpdateRepository {
                     (
                     :sistemaId
                     ,:titulo
-                    ,:descricao
+                    ,:texto
                     ,:dataAtualizacao
                     )
                 """;

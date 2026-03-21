@@ -20,6 +20,10 @@ public class DevUpdateService {
         return lst;
     }
 
+    public DevUpdateModel Obter(Integer id){
+        return repository.Obter(id);
+    }
+
     public void Inserir(DevUpdateModel devUpdateModel){ repository.Inserir(devUpdateModel); }
 
     public void Excluir(Integer id){ repository.Excluir(id); }
