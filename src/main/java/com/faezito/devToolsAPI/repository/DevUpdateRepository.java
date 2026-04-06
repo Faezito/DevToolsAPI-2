@@ -31,7 +31,7 @@ public class DevUpdateRepository implements IDevUpdateRepository {
 
     @Override
     public DevUpdateModel Obter(Integer id) {
-        String sql = "select * from dev.Atualizacoes where ID = :id";
+        String sql = "select top (3) * from dev.Atualizacoes where ID = :id";
 
         Map<String, Object> params = Map.of("id", id);
 
