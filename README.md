@@ -104,10 +104,12 @@ docker run -p 8080:8080 devtools-api
 | Java 17 | Linguagem principal |
 | Spring Boot 3 | Framework back-end |
 | Spring Data JPA | Persistência de dados |
+| SQL Server | Banco de Dados |
 | Swagger / OpenAPI 3 | Documentação da API |
 | Docker | Containerização |
 | Maven | Gerenciamento de dependências |
 | Render | Plataforma de deploy |
+
 
 ---
 
