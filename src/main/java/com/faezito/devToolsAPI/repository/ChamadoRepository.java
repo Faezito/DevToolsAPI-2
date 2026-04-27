@@ -42,9 +42,9 @@ public class ChamadoRepository implements IChamadoRepository {
     public void Inserir(ChamadoModel model) {
         String sql = """
                 INSERT INTO dev.Chamados
-                (Titulo, Descricao, Status, Prioridade, UsuarioID, DataAbertura, UsuarioLogado, SistemaID, UsuarioID)
+                (Titulo, Descricao, Status, Prioridade, UsuarioID, DataAbertura, UsuarioLogado, SistemaID)
                 VALUES
-                (:titulo, :descricao, :status, :prioridade, :usuarioId, :dataAbertura, :usuarioLogado, :sistemaId, :usuarioId)
+                (:titulo, :descricao, :status, :prioridade, :usuarioId, :dataAbertura, :usuarioLogado, :sistemaId)
                 """;
         SqlParameterSource param = new BeanPropertySqlParameterSource(model);
         db.update(sql, param);
