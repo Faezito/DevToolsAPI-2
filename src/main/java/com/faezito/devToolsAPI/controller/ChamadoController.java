@@ -1,6 +1,8 @@
 package com.faezito.devToolsAPI.controller;
 
 import com.faezito.devToolsAPI.model.ChamadoModel;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoFechamentoDTO;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoRequestDTO;
 import com.faezito.devToolsAPI.service.interfaces.IChamadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,14 +33,9 @@ public class ChamadoController {
 
     @GetMapping("/Listar")
     @Operation(summary = "Listar Chamados", description = "Lista os chamados do sistema informado")
-    public List<ChamadoModel> Listar(
-            @Parameter(description = "ID do usuário solicitante", example = "1") @RequestParam(required = false) Integer usuarioId,
-            @Parameter(description = "ID do sistema para qual o suporte foi solicitado") @RequestParam(required = false) Integer sistemaId,
-            @Parameter(description = "ID do atendente reponsável pelo chamado") @RequestParam(required = false) Integer atendenteId,
-            @Parameter(description = "ID do Chamado") @RequestParam(required = false) Integer chamadoId
-    )
+    public List<ChamadoModel> Listar(@RequestBody ChamadoRequestDTO req)
     {
-        return service.Listar(sistemaId, usuarioId, atendenteId, chamadoId);
+        return service.Listar(req);
     }
 
     @PostMapping("/Cadastrar")
@@ -74,13 +71,11 @@ public class ChamadoController {
 
     @Operation(summary = "Fechar Chamado", description = "Fecha um chamado")
     @PutMapping("/Fechar")
-    public String Fechar(@RequestBody ChamadoModel chamado)
+    public String Fechar(@RequestBody ChamadoFechamentoDTO dto)
     {
-        chamado.setDataAlteracao(LocalDateTime.now());
-        chamado.setDataFechamento(LocalDateTime.now());
-        service.Atribuir(chamado);
+        service.FecharChamado(dto);
 
-        return "Atribuição concluída";
+        return "Chamado fechado com sucesso";
     }
 
     @Operation(summary = "Deletar Chamado")
@@ -90,6 +85,4 @@ public class ChamadoController {
 
         return "Deletado com sucesso!";
     }
-
-
 }
