@@ -1,6 +1,8 @@
 package com.faezito.devToolsAPI.service;
 
 import com.faezito.devToolsAPI.model.ChamadoModel;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoFechamentoDTO;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoRequestDTO;
 import com.faezito.devToolsAPI.repository.interfaces.IChamadoRepository;
 import com.faezito.devToolsAPI.service.interfaces.IChamadoService;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,8 @@ public class ChamadoService implements IChamadoService {
     }
 
     @Override
-    public List<ChamadoModel> Listar(Integer sistemaId, Integer usuarioId, Integer atendenteId, Integer chamadoId) {
-        return repository.Listar(sistemaId, usuarioId, atendenteId, chamadoId);
+    public List<ChamadoModel> Listar(ChamadoRequestDTO req) {
+        return repository.Listar(req);
     }
 
     @Override
@@ -44,5 +46,10 @@ public class ChamadoService implements IChamadoService {
     @Override
     public void Atribuir(ChamadoModel model) {
         repository.Atribuir(model);
+    }
+
+    @Override
+    public void FecharChamado(ChamadoFechamentoDTO dto) {
+        repository.FecharChamado(dto);
     }
 }

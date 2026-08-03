@@ -1,6 +1,8 @@
 package com.faezito.devToolsAPI.repository;
 
 import com.faezito.devToolsAPI.model.ChamadoModel;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoFechamentoDTO;
+import com.faezito.devToolsAPI.model.DTOs.ChamadoRequestDTO;
 import com.faezito.devToolsAPI.repository.interfaces.IChamadoRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -21,7 +23,7 @@ public class ChamadoRepository implements IChamadoRepository {
     }
 
     @Override
-    public List<ChamadoModel> Listar(Integer sistemaId, Integer usuarioId, Integer atendenteId, Integer chamadoId) {
+    public List<ChamadoModel> Listar(ChamadoRequestDTO req) {
         String sql = """
                 select * from dev.Chamados
                 WHERE (:sistemaId IS NULL OR SistemaID = :sistemaId)
@@ -30,11 +32,7 @@ public class ChamadoRepository implements IChamadoRepository {
                 AND   (:chamadoId IS NULL OR ID = :chamadoId)                
                 """;
 
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("sistemaId", sistemaId)
-                .addValue("usuarioId", usuarioId)
-                .addValue("atendenteId", atendenteId)
-                .addValue("chamadoId", chamadoId);
+        SqlParameterSource params = new BeanPropertySqlParameterSource(req);
         return db.query(sql, params, new BeanPropertyRowMapper<>(ChamadoModel.class));
     }
 
@@ -79,6 +77,20 @@ public class ChamadoRepository implements IChamadoRepository {
     public void Atribuir(ChamadoModel model) {
         String sql = "UPDATE dev.Chamados SET AtendenteID = :atendenteId, UsuarioLogado = :usuarioLogado, DataAlteracao = :dataAlteracao WHERE ID = :id";
         SqlParameterSource param = new BeanPropertySqlParameterSource(model);
+        db.update(sql, param);
+    }
+
+    @Override
+    public void FecharChamado(ChamadoFechamentoDTO dto){
+        String sql = """
+                UPDATE dev.Chamados
+                SET Status = :status,
+                DataFechamento = :dataFechamento,
+                DataAlteracao = :dataAlteracao,
+                UsuarioID = :usuarioId
+                """;
+
+        SqlParameterSource param = new BeanPropertySqlParameterSource(dto);
         db.update(sql, param);
     }
 }
