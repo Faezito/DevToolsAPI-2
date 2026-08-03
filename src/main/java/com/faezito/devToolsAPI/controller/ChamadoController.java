@@ -7,6 +7,8 @@ import com.faezito.devToolsAPI.service.interfaces.IChamadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -33,8 +35,9 @@ public class ChamadoController {
 
     @GetMapping("/Listar")
     @Operation(summary = "Listar Chamados", description = "Lista os chamados do sistema informado")
-    public List<ChamadoModel> Listar(@RequestBody ChamadoRequestDTO req)
+    public List<ChamadoModel> Listar(@ParameterObject ChamadoRequestDTO req)
     {
+        System.out.println(">>> REQ: " + req);
         return service.Listar(req);
     }
 

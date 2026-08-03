@@ -1,17 +1,23 @@
 package com.faezito.devToolsAPI.model.DTOs;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ChamadoRequestDTO {
-    @Schema(description = "ID do usuário que abriu o chamado, tipo int", example = "1")
+    @Schema(description = "ID do usuário que abriu o chamado, tipo int", example = "1", nullable = true)
     public Integer usuarioId;
 
-    @Schema(description = "ID do sistema de onde o chamado veio, tipo int", example = "1")
+    @Schema(description = "ID do sistema de onde o chamado veio, tipo int", example = "1", nullable = true)
     public Integer sistemaId;
 
-    @Schema(description = "ID do atendente do chamado, tipo int", example = "1")
+    @Schema(description = "ID do atendente do chamado, tipo int", example = "1", nullable = true)
     public Integer atendenteId;
 
-    @Schema(description = "ID do Chamado, tipo int", example = "1")
+    @Schema(description = "ID do Chamado, tipo int", example = "1", nullable = true)
     public Integer chamadoId;
 }
