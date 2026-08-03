@@ -24,7 +24,9 @@ public class ChamadoService implements IChamadoService {
 
     @Override
     public ChamadoModel Obter(int chamadoId) {
-        var lst = repository.Listar(null, null, null, chamadoId);
+        var dto = new ChamadoRequestDTO();
+        dto.chamadoId = chamadoId;
+        var lst = repository.Listar(dto);
         return lst.stream().findFirst().orElse(null);
     }
 
