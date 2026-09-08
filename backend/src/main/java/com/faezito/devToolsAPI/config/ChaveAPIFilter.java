@@ -1,16 +1,16 @@
 package com.faezito.devToolsAPI.config;
 
 import com.faezito.devToolsAPI.model.UsuarioModel;
-import com.faezito.devToolsAPI.service.UsuarioService;
 import com.faezito.devToolsAPI.service.interfaces.IChaveAPIService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -18,13 +18,19 @@ import java.util.List;
 
 public class ChaveAPIFilter extends OncePerRequestFilter {
     private final IChaveAPIService keyService;
+    private final String activeProfile;
 
-    public ChaveAPIFilter(IChaveAPIService keyService) {
+    public ChaveAPIFilter(IChaveAPIService keyService, String activeProfile) {
         this.keyService = keyService;
+        this.activeProfile = activeProfile;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest req){
+        if(activeProfile.equals("local")){
+            return true;
+        }
+
         String path = req.getRequestURI();
         System.out.println(">>> PATH: " + path);
         return path.contains("/usuario/Inserir") ||
@@ -57,7 +63,6 @@ public class ChaveAPIFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Disponibiliza o usuário para os controllers via atributo da request
         req.setAttribute("usuarioAutenticado", usuario);
 
         var auth = new UsernamePasswordAuthenticationToken(
