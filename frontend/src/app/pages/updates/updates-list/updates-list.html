@@ -1,0 +1,17 @@
+<h1>Lista de Updates</h1>
+
+@if (updates().length > 0){
+    <table class="table table-striped">
+        @for (update of updates(); track update.id){
+            <tr (click)="abrirUpdate(update)" style="cursor: pointer;">
+                <td>
+                    {{update.titulo}}
+                </td>
+
+                <td>
+                    {{update.dataAtualizacao | date:'dd/MM/yyyy'}}
+                </td>
+            </tr>
+        }
+    </table>
+}
