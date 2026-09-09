@@ -1,8 +1,11 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiKeyInterceptor } from './interceptors/api-key.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient()
-  ]
+    provideHttpClient(
+      withInterceptors([apiKeyInterceptor])
+    )
+  ],
 };
