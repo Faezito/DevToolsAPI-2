@@ -26,9 +26,6 @@ import java.util.List;
 public class SecurityConfig {
     private final CorsConfig corsConfig;
 
-    @Value("${spring.profiles.active:default}")
-    private String activeProfile;
-
     public SecurityConfig(CorsConfig corsConfig) {
         this.corsConfig = corsConfig;
     }
@@ -38,10 +35,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> {
-                    if ("local".equals(activeProfile)) {
-                        auth.anyRequest().permitAll();
-                    } else {
+                .authorizeHttpRequests(auth -> 
                         auth.requestMatchers(
                                 "/usuario/Login",
                                 "/usuario/Inserir",
@@ -49,9 +43,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
                                 "/health"
-                        ).permitAll().anyRequest().authenticated();
-                    }
-                })
+                        ).permitAll().anyRequest().authenticated()
+                )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -60,7 +53,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("!local")
     public UserDetailsService userDetailsService(
             @Value("${API_USERNAME}") String username,
             @Value("${API_PASSWORD}") String password) {
@@ -79,7 +71,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // ← ajuste para sua origem em produção
+        config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -89,6 +81,6 @@ public class SecurityConfig {
 
     @Bean
     public ChaveAPIFilter chaveAPIFilter(IChaveAPIService chaveAPIService) {
-        return new ChaveAPIFilter(chaveAPIService, activeProfile);
+        return new ChaveAPIFilter(chaveAPIService);
     }
 }

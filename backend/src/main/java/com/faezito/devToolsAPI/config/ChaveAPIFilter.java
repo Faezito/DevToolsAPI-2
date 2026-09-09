@@ -18,19 +18,13 @@ import java.util.List;
 
 public class ChaveAPIFilter extends OncePerRequestFilter {
     private final IChaveAPIService keyService;
-    private final String activeProfile;
 
-    public ChaveAPIFilter(IChaveAPIService keyService, String activeProfile) {
+    public ChaveAPIFilter(IChaveAPIService keyService) {
         this.keyService = keyService;
-        this.activeProfile = activeProfile;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest req){
-        if(activeProfile.equals("local")){
-            return true;
-        }
-
         String path = req.getRequestURI();
         System.out.println(">>> PATH: " + path);
         return path.contains("/usuario/Inserir") ||
