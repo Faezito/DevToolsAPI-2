@@ -13,6 +13,12 @@ export class DevUpdateService {
   constructor(private http: HttpClient) {}
 
   obter(id: number): Observable<DevUpdate> {
-    return this.http.get<DevUpdate>(`${this.apiUrl}/Obter/${id}`);
+    return this.http.get<DevUpdate>(
+      `${this.apiUrl}/Obter/${id}`
+    );
+  }
+
+  listar(): Observable<DevUpdate[]> {
+    return this.http.get<DevUpdate[]>(`${this.apiUrl}/Listar/2`);
   }
 }
