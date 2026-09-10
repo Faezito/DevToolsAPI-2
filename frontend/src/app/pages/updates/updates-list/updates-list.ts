@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DevUpdateService } from '../../../services/devupdate.services';
 import { DevUpdate } from '../../../models/devupdate.model';
 import { DatePipe } from '@angular/common';
-import { UpdateModal } from '../update-modal/update-modal';
+import { ModalGenerico } from '../../../components/modal-generico/modal-generico';
 
 @Component({
   selector: 'app-updates-list',
@@ -19,6 +19,7 @@ export class UpdatesList implements OnInit {
   ngOnInit(): void {
       this.devUpdateService.listar().subscribe({
         next: (updates) => {
+          console.log(updates);
           this.updates.set(
               updates.sort((a, b) =>
                 new Date(b.dataAtualizacao).getTime() -
@@ -33,12 +34,15 @@ export class UpdatesList implements OnInit {
   }
 
   abrirUpdate(update: DevUpdate): void {
-    const modalRef = this.modalService.open(UpdateModal, {
+    const modalRef = this.modalService.open(ModalGenerico, {
       size: 'xl',
       centered: true,
     });
 
-    modalRef.componentInstance.update = update;
+    modalRef.componentInstance.props = {
+      titulo: `${update.titulo} - ${update.sistema}`,
+      texto: update.texto,
+    };
   }
 
 }
