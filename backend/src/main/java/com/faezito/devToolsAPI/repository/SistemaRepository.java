@@ -24,8 +24,8 @@ public class SistemaRepository implements ISistemaRepository {
     @Override
     public Integer Inserir(SistemaModel model) {
         String sql = """
-                INSERT INTO Sistemas ([Descricao],[Url])
-                VALUES (:descricao, :url)
+                INSERT INTO Sistemas (ID, [Descricao],[Url])
+                VALUES (:id, :descricao, :url)
                 """;
         SqlParameterSource params = new BeanPropertySqlParameterSource(model);
         return db.update(sql, params);
