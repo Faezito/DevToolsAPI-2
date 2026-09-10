@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class DevUpdateModel {
     public Integer id;
     public Integer sistemaId;
+    public String sistema;
     public String titulo;
     public String texto;
     public LocalDateTime dataAtualizacao;

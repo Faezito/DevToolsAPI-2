@@ -15,6 +15,7 @@ public class ChamadoModel {
     private Integer id;
     @Schema(description = "ID do sistema do qual o chamado veio", example = "1")
     private Integer sistemaId;
+    private String sistema;
     @Schema(description = "ID do responsável por atender o chamado", example = "1")
     private Integer atendenteId;
     @Schema(description = "Título do chamado, string")

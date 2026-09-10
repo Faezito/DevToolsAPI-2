@@ -24,11 +24,12 @@ public class ChamadoRepository implements IChamadoRepository {
     @Override
     public List<ChamadoModel> Listar(ChamadoRequestDTO req) {
         String sql = """
-                select * from dev.Chamados
+                select c.*, s.Descricao AS sistema from dev.Chamados c
+                inner join Sistemas s on s.ID = c.SistemaID
                 WHERE (:sistemaId IS NULL OR SistemaID = :sistemaId)
                 AND   (:usuarioId IS NULL OR UsuarioID = :usuarioId)
                 AND   (:atendenteId IS NULL OR AtendenteID = :atendenteId) 
-                AND   (:chamadoId IS NULL OR ID = :chamadoId)                
+                AND   (:chamadoId IS NULL OR c.ID = :chamadoId)                
                 """;
 
         SqlParameterSource params = new BeanPropertySqlParameterSource(req);

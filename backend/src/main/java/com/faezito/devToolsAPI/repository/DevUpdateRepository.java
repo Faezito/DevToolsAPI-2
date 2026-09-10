@@ -22,7 +22,14 @@ public class DevUpdateRepository implements IDevUpdateRepository {
 
     @Override
     public List<DevUpdateModel> Listar(Integer sistemaId) {
-        String sql = "select * from dev.Atualizacoes where SistemaID = :sistemaId";
+        String sql = """
+        select 
+        a.*, 
+        s.Descricao AS sistema 
+        from dev.Atualizacoes a
+        inner join Sistemas s on s.ID = a.SistemaID
+        where SistemaID = :sistemaId
+        """;
 
         Map<String, Object> params = Map.of("sistemaId", sistemaId);
 
