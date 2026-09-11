@@ -2,13 +2,15 @@ import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { DevUpdate } from './models/devupdate.model';
 import { SideMenu } from './components/side-menu/side-menu';
+import { Loading } from './components/loading/loading';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     SideMenu,
-    RouterLink
+    RouterLink,
+    Loading
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
