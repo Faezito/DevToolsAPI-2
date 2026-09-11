@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'modal-generico',
@@ -8,6 +9,8 @@ import { Component, Input } from '@angular/core';
 })
 
 export class ModalGenerico {
+  constructor(public activeModal: NgbActiveModal){}
+
   @Input({ required: true })
   props!: ModalGenericoProps;
 }
@@ -15,4 +18,5 @@ export class ModalGenerico {
 export interface ModalGenericoProps {
   titulo: string;
   texto: string;
+  data: string;
 }
