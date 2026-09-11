@@ -32,7 +32,9 @@ export class LoadingService {
 
     if (tempoRestante > 0) {
       setTimeout(() => {
-        this._loading.set(false);
+        if (this.requisicoesAtivas === 0) {
+          this._loading.set(false);
+        }
       }, tempoRestante);
     } else {
       this._loading.set(false);
