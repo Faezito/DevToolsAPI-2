@@ -2,19 +2,13 @@
 
   @for (filtro of filtros; track filtro.campo) {
 
-    @if (filtro.tipo === 'texto') {
+    @if (filtro.tipo === 'text' || filtro.tipo === 'email'  || filtro.tipo === 'date' ) {
       <div class="col-auto col-md-auto">
-        <!-- 
-            <label class="form-label">
-            {{ filtro.titulo }}
-            </label> 
-        -->
-
         <input
-          type="text"
+          [type]="filtro.tipo"
           class="form-control"
           [(ngModel)]="valores[filtro.campo]"
-          placeholder="{{ filtro.titulo }}"
+          [placeholder]="filtro.titulo"
         />
       </div>
     }
@@ -23,9 +17,10 @@
         <div class="col-4 col-md-2">
             <select
             class="form-select"
-            [(ngModel)]="valores[filtro.campo]">
+            [(ngModel)]="valores[filtro.campo]"
+            [class.filtro-erro]="filtroErro === filtro.campo">
 
-            <option [ngValue]="0">
+            <option [ngValue]="0" selected disabled>
                 {{ filtro.titulo }}
             </option>
 
@@ -40,7 +35,7 @@
         }
   }
 
-  <div class="col-4 col-md-2 mt-auto">
+  <div class="col-auto mt-auto">
     <button
       type="button"
       class="btn btn-primary"
@@ -48,4 +43,5 @@
       Filtrar
     </button>
   </div>
+  
 </div>

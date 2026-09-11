@@ -1,0 +1,22 @@
+.filtro-erro {
+  animation: filtro-treme 0.4s;
+  border-color: #dc3545 !important;
+}
+
+@keyframes filtro-treme {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
+}
