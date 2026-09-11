@@ -1,6 +1,9 @@
-<h1 class="text-center mt-4">Notas de Atualização</h1>
+<h1 class="text-center mb-4">Notas de Atualização</h1>
 
-<hr class="my-5">
+<filtro
+  [filtros]="filtros"
+  (filtrar)="aplicarFiltros($event)">
+</filtro>
 
 <app-tabela-generica
   [dados]="updates()"

@@ -18,7 +18,7 @@ export class DevUpdateService {
     );
   }
 
-  listar(): Observable<DevUpdate[]> {
-    return this.http.get<DevUpdate[]>(`${this.apiUrl}/Listar/2`);
+  listar(sistemaId: number): Observable<DevUpdate[]> {
+    return this.http.get<DevUpdate[]>(`${this.apiUrl}/Listar/${sistemaId}`);
   }
 }
