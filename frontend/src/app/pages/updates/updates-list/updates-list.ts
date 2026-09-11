@@ -1,15 +1,17 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DevUpdateService } from '../../../services/devupdate.services';
 import { DevUpdate } from '../../../models/devupdate.model';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { ModalGenerico } from '../../../components/modal-generico/modal-generico';
 import { Tabela, Coluna } from '../../../components/tabela-generica/tabela-generica';
 import { Filtro, FiltroDinamico } from '../../../components/filtro-dinamico/filtro-dinamico';
+import { Menu, TopoMenu } from '../../../components/topo-menu/topo-menu';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-updates-list',
-  imports: [DatePipe, Tabela, FiltroDinamico],
+  imports: [DatePipe, Tabela, FiltroDinamico, TopoMenu, RouterLink],
   providers: [DatePipe],
   templateUrl: './updates-list.html',
   styleUrl: './updates-list.css',
@@ -17,11 +19,17 @@ import { Filtro, FiltroDinamico } from '../../../components/filtro-dinamico/filt
 
 export class UpdatesList implements OnInit {
   protected updates = signal<DevUpdate[]>([]);
+  
+  @ViewChild(FiltroDinamico)
+  filtroDinamico!: FiltroDinamico<DevUpdate>;
 
   constructor(
     private devUpdateService: DevUpdateService,
     private modalService: NgbModal,
-    private dtp: DatePipe) { }
+    private dtp: DatePipe,
+    private location: Location,
+    private router: Router
+  ) { }
 
   colunas: Coluna<DevUpdate>[] = [
     {campo: 'titulo', titulo: 'Título'},
@@ -33,7 +41,7 @@ export class UpdatesList implements OnInit {
     {
       campo: 'titulo',
       titulo: 'Título',
-      tipo: 'texto'
+      tipo: 'text'
     },
     {
       campo: 'sistemaId',
@@ -42,13 +50,36 @@ export class UpdatesList implements OnInit {
       opcoes: [
         { valor: 2, texto: 'BOPE' }
       ]
+    },
+    {
+      campo: 'dataAtualizacao',
+      titulo: 'Data',
+      tipo: 'date'
     }
   ];
 
+  menu: Menu = {
+    titulo: 'Atualizações',
+    subtitulo: 'Lista de atualizações do sistema',
+    btnCadastrar: true,
+    btnVoltar: true
+  };
+
+  cadastrar(): void {
+    this.router.navigate(['/cadastro']);
+  }
+
+  voltar(): void {
+    this.location.back();
+  }
+
   aplicarFiltros(filtros: Record<string, unknown>): void {
     const sistemaId = filtros['sistemaId'];
+    const titulo = filtros['titulo'];
+    const data = filtros['dataAtualizacao'];
 
-    if (typeof sistemaId !== 'number') {
+    if (typeof sistemaId !== 'number' || sistemaId == 0) {
+      this.filtroDinamico.marcarErro('sistemaId');
       return;
     }
 
@@ -58,9 +89,23 @@ export class UpdatesList implements OnInit {
           new Date(b.dataAtualizacao).getTime() -
           new Date(a.dataAtualizacao).getTime()
         );
+        
+        let resultado = ordenados;
+        if (typeof titulo === 'string' && titulo.trim()) {
+            const termo = titulo.trim().toLowerCase();
+            resultado = ordenados.filter(update =>
+              update.titulo.toLowerCase().includes(termo)
+            );
+        }
 
-        this.lista = ordenados;
-        this.updates.set(ordenados);
+        if (typeof data === 'string' && data) {
+          resultado = resultado.filter(update =>
+            update.dataAtualizacao.startsWith(data as string)
+          );
+        }
+
+        this.lista = resultado;
+        this.updates.set(resultado);
       },
       error: (error) => {
         console.error('Erro ao consultar API:', error);

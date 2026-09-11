@@ -1,4 +1,8 @@
-<h1 class="text-center mb-4">Notas de Atualização</h1>
+<app-topo-menu
+  [menu]="menu"
+  (cadastrar)="cadastrar()"
+  (voltar)="voltar()">
+</app-topo-menu>
 
 <filtro
   [filtros]="filtros"
