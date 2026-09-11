@@ -1,0 +1,23 @@
+<table class="table table-hover">
+  <thead>
+    <tr scope="col" class="p-3 text-center">
+      @for (coluna of colunas; track coluna.campo) {
+        <th>
+          {{ coluna.titulo }}
+        </th>
+      }
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (item of dados; track $index) {
+      <tr (click)="detalhe.emit(item)" class="hover">
+        @for (coluna of colunas; track coluna.campo) {
+          <td [class]="coluna.classe">
+            {{ formatarValor(item, coluna) }}
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>
