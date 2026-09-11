@@ -4,22 +4,33 @@ import { DevUpdateService } from '../../../services/devupdate.services';
 import { DevUpdate } from '../../../models/devupdate.model';
 import { DatePipe } from '@angular/common';
 import { ModalGenerico } from '../../../components/modal-generico/modal-generico';
+import { Tabela, Coluna } from '../../../components/tabela-generica/tabela-generica';
 
 @Component({
   selector: 'app-updates-list',
-  imports: [DatePipe],
+  imports: [DatePipe, Tabela],
+  providers: [DatePipe],
   templateUrl: './updates-list.html',
   styleUrl: './updates-list.css',
 })
+
 export class UpdatesList implements OnInit {
   protected updates = signal<DevUpdate[]>([]);
 
-  constructor(private devUpdateService: DevUpdateService, private modalService: NgbModal) { }
+  constructor(
+    private devUpdateService: DevUpdateService,
+    private modalService: NgbModal,
+    private dtp: DatePipe) { }
+
+  colunas: Coluna<DevUpdate>[] = [
+    {campo: 'titulo', titulo: 'Título'},
+    {campo: 'sistema', titulo: 'Sistema'},
+    {campo: 'dataAtualizacao', titulo: 'Data', classe: 'text-center', formato: 'data'},
+  ];
 
   ngOnInit(): void {
       this.devUpdateService.listar().subscribe({
         next: (updates) => {
-          console.log(updates);
           this.updates.set(
               updates.sort((a, b) =>
                 new Date(b.dataAtualizacao).getTime() -
@@ -42,7 +53,7 @@ export class UpdatesList implements OnInit {
     modalRef.componentInstance.props = {
       titulo: `${update.titulo} - ${update.sistema}`,
       texto: update.texto,
+      data: this.dtp.transform(update.dataAtualizacao, 'dd/MM/yyyy')
     };
   }
-
 }

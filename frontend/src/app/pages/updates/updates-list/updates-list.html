@@ -1,32 +1,9 @@
-<h1 class="text-center mt-4">Lista de Updates</h1>
+<h1 class="text-center mt-4">Notas de Atualização</h1>
 
 <hr class="my-5">
 
-@if (updates().length > 0){
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col" class="p-3 text-center">Título</th>
-                <th scope="col" class="p-3 text-center">Sistema</th>
-                <th scope="col" class="p-3 text-center">Data de Atualização</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (update of updates(); track update.id){
-            <tr (click)="abrirUpdate(update)" class="hover">
-                <td class="p-2">
-                    {{update.titulo}}
-                </td>
-
-                <td class="p-2">
-                    {{update.sistema}}
-                </td>
-                
-                <td class="p-2 text-center">
-                    {{update.dataAtualizacao | date:'dd/MM/yyyy'}}
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-}
+<app-tabela-generica
+  [dados]="updates()"
+  [colunas]="colunas"
+  (detalhe)="abrirUpdate($event)">
+</app-tabela-generica>
