@@ -1,0 +1,51 @@
+<div class="row d-flex g-3 justify-content-end border border-2 rounded pb-3">
+
+  @for (filtro of filtros; track filtro.campo) {
+
+    @if (filtro.tipo === 'texto') {
+      <div class="col-auto col-md-auto">
+        <!-- 
+            <label class="form-label">
+            {{ filtro.titulo }}
+            </label> 
+        -->
+
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="valores[filtro.campo]"
+          placeholder="{{ filtro.titulo }}"
+        />
+      </div>
+    }
+
+    @if (filtro.tipo === 'select') {
+        <div class="col-4 col-md-2">
+            <select
+            class="form-select"
+            [(ngModel)]="valores[filtro.campo]">
+
+            <option [ngValue]="0">
+                {{ filtro.titulo }}
+            </option>
+
+            @for (opcao of filtro.opcoes; track opcao.valor) {
+                <option [ngValue]="opcao.valor">
+                {{ opcao.texto }}
+                </option>
+            }
+
+            </select>
+        </div>
+        }
+  }
+
+  <div class="col-4 col-md-2 mt-auto">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="aplicar()">
+      Filtrar
+    </button>
+  </div>
+</div>
