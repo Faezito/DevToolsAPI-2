@@ -1,10 +1,12 @@
 import { HttpInterceptorFn } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { LoadingService } from "../services/loading.service";
-import { finalize } from "rxjs";
+import { catchError, finalize, throwError } from "rxjs";
+import { GlobalErrorService } from "../services/global-error.service";
 
 export const apiKeyInterceptor: HttpInterceptorFn = (req, next) => {
     const loadingService = inject(LoadingService);
+    const globalErrorService = inject(GlobalErrorService);
     
     loadingService.iniciar();
     
@@ -15,6 +17,13 @@ export const apiKeyInterceptor: HttpInterceptorFn = (req, next) => {
         },
     });
     return next(request).pipe(
-        finalize(() => loadingService.finalizar())
+
+    catchError(error => {
+        globalErrorService.tratar(error);
+
+        return throwError(() => error);
+        }),
+
+    finalize(() => loadingService.finalizar())
     );
 }
