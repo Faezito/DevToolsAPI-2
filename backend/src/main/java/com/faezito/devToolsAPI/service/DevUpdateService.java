@@ -16,7 +16,7 @@ public class DevUpdateService {
 
     public List<DevUpdateModel> Listar(Integer sistemaId){
         List<DevUpdateModel> lst = repository.Listar(sistemaId);
-        repository.Limpar(sistemaId);
+        // repository.Limpar(sistemaId);
         return lst;
     }
 
