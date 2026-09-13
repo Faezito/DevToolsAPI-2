@@ -12,11 +12,26 @@
   <tbody>
     @for (item of dados; track $index) {
       <tr (click)="detalhe.emit(item)" class="hover">
+
         @for (coluna of colunas; track coluna.campo) {
           <td [class]="coluna.classe">
-            {{ formatarValor(item, coluna) }}
+
+            @if (coluna.acao != 'excluir') {
+              {{ formatarValor(item, coluna) }}
+            }
+            @else {
+              <button
+                type="button"
+                (click)="excluir.emit(item); $event.stopPropagation()"
+                title="Excluir"
+                class="btn btn-sm">
+                  <i class="fa-regular fa-trash-can"></i>
+              </button>
+            }
+
           </td>
         }
+
       </tr>
     }
   </tbody>

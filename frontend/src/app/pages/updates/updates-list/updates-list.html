@@ -12,5 +12,6 @@
 <app-tabela-generica
   [dados]="updates()"
   [colunas]="colunas"
-  (detalhe)="abrirUpdate($event)">
+  (detalhe)="abrirUpdate($event)"
+  (excluir)="excluir($event)">
 </app-tabela-generica>

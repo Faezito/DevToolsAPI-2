@@ -10,5 +10,11 @@ export const routes: Routes = [
     {
         path: 'updates',
         component: UpdatesList,
+    },
+    {
+        path: 'cadastro',
+        loadComponent: () =>
+            import('./pages/updates/cadastro/cadastro')
+            .then(m => m.Cadastro)
     }
 ];

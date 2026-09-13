@@ -6,6 +6,7 @@ export interface Coluna<T> {
   titulo: string;
   classe?: string;
   formato?: string;
+  acao?: string;
 }
 
 @Component({
@@ -26,8 +27,8 @@ export class Tabela<T> {
   @Input()
   colunas: Coluna<T>[] = [];
 
-  @Output()
-  detalhe = new EventEmitter<T>();
+  @Output() detalhe = new EventEmitter<T>();
+  @Output() excluir = new EventEmitter<T>();
 
   formatarValor(item: T, coluna: Coluna<T>): unknown {
     const valor = item[coluna.campo];

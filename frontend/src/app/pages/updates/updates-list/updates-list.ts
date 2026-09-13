@@ -8,6 +8,7 @@ import { Tabela, Coluna } from '../../../components/tabela-generica/tabela-gener
 import { Filtro, FiltroDinamico } from '../../../components/filtro-dinamico/filtro-dinamico';
 import { Menu, TopoMenu } from '../../../components/topo-menu/topo-menu';
 import { Router, RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-updates-list',
@@ -32,9 +33,11 @@ export class UpdatesList implements OnInit {
   ) { }
 
   colunas: Coluna<DevUpdate>[] = [
+    {campo: 'id', titulo: 'Id'},
     {campo: 'titulo', titulo: 'Título'},
     {campo: 'sistema', titulo: 'Sistema'},
     {campo: 'dataAtualizacao', titulo: 'Data', classe: 'text-center', formato: 'data'},
+    {campo: 'id', titulo: 'Ações', classe: 'text-center', acao: 'excluir'}
   ];
 
   filtros: Filtro<DevUpdate>[] = [
@@ -71,6 +74,47 @@ export class UpdatesList implements OnInit {
 
   voltar(): void {
     this.location.back();
+  }
+
+  excluir(item: DevUpdate): void {
+    Swal.fire({
+        title: 'Excluir atualização?',
+        text: `A atualização "${item.titulo}" será excluída.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Excluir',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((resultado) => {
+
+        if (!resultado.isConfirmed) {
+          return;
+        }
+
+        this.devUpdateService.excluir(item.id).subscribe({
+          next: () => {
+            this.lista = this.lista.filter(x => x.id !== item.id);
+            this.updates.set(this.lista);
+
+            Swal.fire({
+              title: 'Excluída!',
+              text: 'A atualização foi excluída com sucesso.',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            });
+          },
+          error: (erro) => {
+            console.error('Erro ao excluir atualização:', erro);
+
+            Swal.fire({
+              title: 'Erro',
+              text: 'Não foi possível excluir a atualização.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      });
   }
 
   aplicarFiltros(filtros: Record<string, unknown>): void {

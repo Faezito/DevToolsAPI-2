@@ -21,4 +21,15 @@ export class DevUpdateService {
   listar(sistemaId: number): Observable<DevUpdate[]> {
     return this.http.get<DevUpdate[]>(`${this.apiUrl}/Listar/${sistemaId}`);
   }
+
+  inserir(update: DevUpdate): Observable<void>{
+    return this.http.post<void>(
+      `${this.apiUrl}/Inserir`,
+      update
+    );
+  }
+
+  excluir(id: number): Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/Deletar?id=${id}`);
+  }
 }
