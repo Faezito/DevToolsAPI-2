@@ -1,0 +1,17 @@
+.quill-container {
+  display: block;
+  width: 100%;
+}
+
+.quill-container quill-editor {
+  display: block;
+  width: 100%;
+}
+
+.quill-invalido .ql-container {
+  border-color: var(--bs-form-invalid-border-color);
+}
+
+.quill-invalido .ql-toolbar {
+  border-color: var(--bs-form-invalid-border-color);
+}
