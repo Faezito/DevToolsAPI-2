@@ -32,8 +32,7 @@ public class DevUpdateController {
     @Operation(summary = "Cadastrar nota de atualização", description = "Insere uma nova nota de atualização")
     public void Inserir(@RequestBody DevUpdateModel devUpdateModel)
     {
-        //devUpdateModel.setDataAtualizacao(LocalDateTime.parse("2026-02-01"));
-        devUpdateModel.setDataAtualizacao(LocalDateTime.now());
+        // devUpdateModel.setDataAtualizacao(LocalDateTime.now());
         service.Inserir(devUpdateModel);
     }
 
@@ -45,7 +44,7 @@ public class DevUpdateController {
 
     @Operation(summary = "Deletar nota de atualização")
     @DeleteMapping("/Deletar")
-    public void Excluir(Integer id){
+    public void Excluir(@RequestParam Integer id){
         service.Excluir(id);
     }
 
