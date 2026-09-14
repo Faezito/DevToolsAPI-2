@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { QuillModule } from 'ngx-quill';
 import { DevUpdateService } from '../../../services/devupdate.services';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastro',
@@ -134,11 +135,23 @@ export class Cadastro {
     this.devUpdateService.inserir(dados as any)
       .subscribe({
         next: () => {
-          this.voltar();
-        },
-        error: (erro) => {
-          console.error('Erro ao cadastrar atualização:', erro);
-        }
-      });
+            Swal.fire({
+                title: 'Sucesso!',
+                text: `Cadastro efetuado com sucesso! Deseja permanecer na página?`,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Sair',
+                cancelButtonText: 'Permanecer',
+                reverseButtons: true
+              }).then((resultado) => {
+                if(resultado.isConfirmed){
+                    this.voltar();
+                  }
+              });
+            },
+            error: (erro) => {
+              console.error('Erro ao cadastrar atualização:', erro);
+            }
+        });
   }
 }
