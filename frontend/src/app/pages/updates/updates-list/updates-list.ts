@@ -37,7 +37,7 @@ export class UpdatesList implements OnInit {
     {campo: 'titulo', titulo: 'Título'},
     {campo: 'sistema', titulo: 'Sistema'},
     {campo: 'dataAtualizacao', titulo: 'Data', classe: 'text-center', formato: 'data'},
-    {campo: 'id', titulo: 'Ações', classe: 'text-center', acao: 'excluir'}
+    {campo: 'id', titulo: '', classe: 'text-center', acoes: ['editar', 'excluir']},
   ];
 
   filtros: Filtro<DevUpdate>[] = [
@@ -115,6 +115,10 @@ export class UpdatesList implements OnInit {
           }
         });
       });
+  }
+
+  editar(item: DevUpdate): void {
+    this.router.navigate(['/edicao', item.id]);
   }
 
   aplicarFiltros(filtros: Record<string, unknown>): void {

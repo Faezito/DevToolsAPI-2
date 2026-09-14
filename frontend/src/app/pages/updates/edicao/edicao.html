@@ -1,0 +1,105 @@
+<app-topo-menu
+  [menu]="menu"
+  (voltar)="voltar()">
+</app-topo-menu>
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="salvar()">
+
+    <div class="mb-3">
+      <label class="form-label">
+        Título
+      </label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="titulo"
+        [class.is-invalid]="titulo.invalid && titulo.touched">
+
+        @if (titulo.invalid && titulo.touched) {
+        <div class="invalid-feedback">
+            {{ mensagemErro(titulo) }}
+        </div>
+        }
+    </div>
+
+
+    <div class="mb-3">
+      <label class="form-label">
+        Sistema
+      </label>
+
+      <select
+        class="form-select"
+        formControlName="sistemaId"
+        [class.is-invalid]="sistemaId.invalid && sistemaId.touched">
+
+        <option [ngValue]="0">
+          Selecione
+        </option>
+
+        <option [ngValue]="2">
+          BOPE
+        </option>
+
+      </select>
+
+        @if (sistemaId.invalid && sistemaId.touched) {
+        <div class="invalid-feedback">
+            {{ mensagemErro(sistemaId) }}
+        </div>
+        }
+    </div>
+    
+
+    <div class="mb-3">
+
+    <label class="form-label">
+        Texto
+    </label>
+
+    <div class="quill-container">
+        <quill-editor
+        formControlName="texto"
+        theme="snow"
+        [modules]="quillConfig"
+        placeholder=""
+        [class.quill-invalido]="texto.invalid && texto.touched">
+        </quill-editor>
+
+        @if (texto.invalid && texto.touched) {
+        <div class="invalid-feedback">
+            {{ mensagemErro(texto) }}
+        </div>
+        }
+    </div>
+
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">
+        Data da atualização
+      </label>
+
+      <input
+        type="date"
+        class="form-control"
+        formControlName="dataAtualizacao"
+        [class.is-invalid]="dataAtualizacao.invalid && dataAtualizacao.touched">
+
+        @if (dataAtualizacao.invalid && dataAtualizacao.touched) {
+        <div class="invalid-feedback">
+            {{ mensagemErro(dataAtualizacao) }}
+        </div>
+        }
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary">
+      Salvar
+    </button>
+
+  </form>

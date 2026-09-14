@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { UpdatesList } from './pages/updates/updates-list/updates-list';
 import { Home } from './pages/home/home/home';
+import { Edicao } from './pages/updates/edicao/edicao';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,9 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./pages/updates/cadastro/cadastro')
             .then(m => m.Cadastro)
+    },
+    {
+        path: 'edicao/:id',
+        component: Edicao
     }
 ];

@@ -32,4 +32,8 @@ export class DevUpdateService {
   excluir(id: number): Observable<void>{
     return this.http.delete<void>(`${this.apiUrl}/Deletar?id=${id}`);
   }
+
+  atualizar(update: DevUpdate): Observable<void>{
+    return this.http.put<void>(`${this.apiUrl}/Editar`, update);
+  }
 }
