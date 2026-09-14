@@ -1,0 +1,13 @@
+package com.faezito.devToolsAPI.model.DTOs;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginRequestDTO {
+    private String login;
+    private String senha;
+}
