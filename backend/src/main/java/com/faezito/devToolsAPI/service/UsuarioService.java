@@ -1,12 +1,9 @@
 package com.faezito.devToolsAPI.service;
 
-import com.faezito.devToolsAPI.model.ChaveAPIModel;
 import com.faezito.devToolsAPI.model.UsuarioModel;
-import com.faezito.devToolsAPI.repository.UsuarioRepository;
 import com.faezito.devToolsAPI.repository.interfaces.IUsuarioRepository;
 import com.faezito.devToolsAPI.service.interfaces.IChaveAPIService;
 import com.faezito.devToolsAPI.service.interfaces.IUsuarioService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,30 +24,6 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public List<UsuarioModel> Listar(Integer sistemaId, Integer usuarioId){
         return repository.Listar(sistemaId, usuarioId);
-    }
-
-    @Override
-    public UsuarioModel Login(String usuario, String senha) {
-        UsuarioModel user = repository.BuscarPorUsuario(usuario);
-        if(user == null)
-            throw new RuntimeException("Usuário não encontrado!");
-
-        if(!passwordEncoder.matches(senha, user.getSenha()))
-            throw new RuntimeException("Credenciais inválidas");
-
-        List<ChaveAPIModel> chaves = chaveAPIService.Listar(user.id);
-        user.setChaves(chaves);
-        user.setSenha("");
-        return user;
-
-        /* OUTRAS FORMAS
-        user.getChaves().addAll(chaves);
-
-        for(ChaveAPIModel item : chaves){
-            user.getChaves().add(item);
-        }
-
-         */
     }
 
     @Override

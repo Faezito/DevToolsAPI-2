@@ -1,20 +1,28 @@
 package com.faezito.devToolsAPI.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.faezito.devToolsAPI.model.UsuarioModel;
 import com.faezito.devToolsAPI.service.ChaveAPIService;
 import com.faezito.devToolsAPI.service.UsuarioService;
-import io.swagger.v3.oas.annotations.Hidden;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/usuario")
@@ -26,20 +34,6 @@ public class UsuarioController {
     public UsuarioController(UsuarioService seUsuario, ChaveAPIService seChaveApi){
         this.seUsuario = seUsuario;
         this.seChaveApi = seChaveApi;
-    }
-
-    record LoginRequest(String usuario, String senha) {}
-
-    @Operation(summary = "Login")
-    //@Hidden
-    @PostMapping("/Login")
-    public UsuarioModel Login(@RequestBody LoginRequest login){
-        try{
-            UsuarioModel user = seUsuario.Login(login.usuario(), login.senha());
-            return user;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Operation(summary = "Listar", description = "Lista todos os usuários")

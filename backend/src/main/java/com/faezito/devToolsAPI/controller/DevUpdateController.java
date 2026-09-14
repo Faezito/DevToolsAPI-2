@@ -2,13 +2,18 @@ package com.faezito.devToolsAPI.controller;
 
 import com.faezito.devToolsAPI.model.DevUpdateModel;
 import com.faezito.devToolsAPI.service.DevUpdateService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.faezito.devToolsAPI.model.UsuarioAutenticado;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.List;
 
 @RestController
@@ -32,7 +37,6 @@ public class DevUpdateController {
     @Operation(summary = "Cadastrar nota de atualização", description = "Insere uma nova nota de atualização")
     public void Inserir(@RequestBody DevUpdateModel devUpdateModel)
     {
-        // devUpdateModel.setDataAtualizacao(LocalDateTime.now());
         service.Inserir(devUpdateModel);
     }
 

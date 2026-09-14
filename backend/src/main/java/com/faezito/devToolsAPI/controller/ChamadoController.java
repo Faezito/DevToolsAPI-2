@@ -4,6 +4,7 @@ import com.faezito.devToolsAPI.model.ChamadoModel;
 import com.faezito.devToolsAPI.model.DTOs.ChamadoFechamentoDTO;
 import com.faezito.devToolsAPI.model.DTOs.ChamadoRequestDTO;
 import com.faezito.devToolsAPI.service.interfaces.IChamadoService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +13,6 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,7 +37,6 @@ public class ChamadoController {
     @Operation(summary = "Listar Chamados", description = "Lista os chamados do sistema informado")
     public List<ChamadoModel> Listar(@ParameterObject ChamadoRequestDTO req)
     {
-        System.out.println(">>> REQ: " + req);
         return service.Listar(req);
     }
 
