@@ -10,7 +10,23 @@ export const apiKeyInterceptor: HttpInterceptorFn = (req, next) => {
     
     loadingService.iniciar();
     
+    const authorization = req.headers.get('Authorization');
+
+    if (authorization?.startsWith('Bearer ')) {
+        return next(req).pipe(
+
+            catchError(error => {
+                globalErrorService.tratar(error);
+
+                return throwError(() => error);
+            }),
+
+            finalize(() => loadingService.finalizar())
+        );
+    }
+
     const apiKey = window.__env.FRONTEND_API_KEY;
+
     const request = req.clone({
         setHeaders: {
             'X-API-KEY': apiKey || '',
