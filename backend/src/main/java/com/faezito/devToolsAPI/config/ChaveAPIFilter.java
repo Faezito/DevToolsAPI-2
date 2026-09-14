@@ -29,6 +29,7 @@ public class ChaveAPIFilter extends OncePerRequestFilter {
         System.out.println(">>> PATH: " + path);
         return path.contains("/usuario/Inserir") ||
                 path.contains("/swagger-ui") ||
+                path.contains("/acesso") ||
                 path.contains("/usuario/Login") ||
                 path.contains("/v3/api-docs") ||
                 path.equals("/health");
@@ -39,6 +40,14 @@ public class ChaveAPIFilter extends OncePerRequestFilter {
                                     HttpServletResponse res,
                                     FilterChain chain)
         throws ServletException, IOException{
+
+        String authorization = req.getHeader("Authorization");
+
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
         String chave = req.getHeader("X-API-Key");
 
         if(chave == null){

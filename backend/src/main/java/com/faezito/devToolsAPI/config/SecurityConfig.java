@@ -2,7 +2,6 @@ package com.faezito.devToolsAPI.config;
 
 import com.faezito.devToolsAPI.service.interfaces.IChaveAPIService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,14 +19,26 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.crypto.SecretKey;
+import io.jsonwebtoken.security.Keys;
+
+import java.nio.charset.StandardCharsets;
+
 import java.util.List;
 
 @Configuration
 public class SecurityConfig {
     private final CorsConfig corsConfig;
+    private final SecretKey jwtKey;
 
-    public SecurityConfig(CorsConfig corsConfig) {
+    public SecurityConfig(CorsConfig corsConfig,
+        @Value("${JWT_SECRET}") String jwtSecret) {
         this.corsConfig = corsConfig;
+        this.jwtKey = Keys.hmacShaKeyFor(
+                jwtSecret.getBytes(StandardCharsets.UTF_8)
+        );
     }
 
     @Bean
@@ -39,6 +50,7 @@ public class SecurityConfig {
                         auth.requestMatchers(
                                 "/usuario/Login",
                                 "/usuario/Inserir",
+                                "/acesso/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
@@ -46,7 +58,14 @@ public class SecurityConfig {
                         ).permitAll().anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        new FiltroJwt(jwtKey),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterAfter(
+                        filter,
+                        FiltroJwt.class
+                )                
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();

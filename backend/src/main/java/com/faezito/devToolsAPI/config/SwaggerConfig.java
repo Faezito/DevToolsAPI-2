@@ -10,22 +10,39 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    @Bean
-    public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "ApiKeyAuth";
+@Bean
+public OpenAPI customOpenAPI() {
 
-        return new OpenAPI()
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                .components(new Components()
-                        .addSecuritySchemes(securitySchemeName,
-                                new SecurityScheme()
-                                        .name("X-API-Key")       // ← nome exato do header
-                                        .type(SecurityScheme.Type.APIKEY)
-                                        .in(SecurityScheme.In.HEADER)))
-                .info(new Info()
-                        .title("DevTools API")
-                        .version("1.0")
-                        .description("API para facilitar a comunicação entre devs e usuários nos sistemas")
-                );
-    }
-}
+    final String apiKeyScheme = "ApiKeyAuth";
+    final String bearerScheme = "BearerAuth";
+
+    return new OpenAPI()
+            .addSecurityItem(
+                    new SecurityRequirement()
+                            .addList(bearerScheme)
+            )
+            .components(new Components()
+                    .addSecuritySchemes(
+                            apiKeyScheme,
+                            new SecurityScheme()
+                                    .name("X-API-Key")
+                                    .type(SecurityScheme.Type.APIKEY)
+                                    .in(SecurityScheme.In.HEADER)
+                    )
+                    .addSecuritySchemes(
+                            bearerScheme,
+                            new SecurityScheme()
+                                    .name("Authorization")
+                                    .type(SecurityScheme.Type.HTTP)
+                                    .scheme("bearer")
+                                    .bearerFormat("JWT")
+                    )
+            )
+            .info(new Info()
+                    .title("DevTools API")
+                    .version("1.0")
+                    .description(
+                            "API para facilitar a comunicação entre devs e usuários nos sistemas"
+                    )
+            );
+}}
